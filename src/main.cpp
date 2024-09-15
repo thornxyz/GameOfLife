@@ -6,9 +6,9 @@
 int main(void) {
     Color GREY = {29, 29, 29, 255};
     const int MENU_WIDTH = 200;
-    const int WINDOW_WIDTH = 750;
-    const int WINDOW_HEIGHT = 750;
-    const int CELL_SIZE = 25;
+    const int WINDOW_WIDTH = 1000;
+    const int WINDOW_HEIGHT = 950;
+    int CELL_SIZE = 25;
     int FPS = 12;
 
     InitWindow(WINDOW_WIDTH + MENU_WIDTH, WINDOW_HEIGHT, "Conway's");
@@ -26,11 +26,16 @@ int main(void) {
     Rectangle clearButton = {buttonX, 70, buttonWidth, buttonHeight};
     Rectangle randomButton = {buttonX, 120, buttonWidth, buttonHeight};
     Rectangle fpsButton = {buttonX, 170, buttonWidth, buttonHeight};
-
-    Rectangle resetButton = {buttonX, 220, buttonWidth, buttonHeight};
     Rectangle plusButtonArea = {fpsButton.x + buttonWidth - 40, fpsButton.y, 40,
                                 buttonHeight};
     Rectangle minusButtonArea = {fpsButton.x, fpsButton.y, 40, buttonHeight};
+    Rectangle resetButton = {buttonX, 220, buttonWidth, buttonHeight};
+    Rectangle cellSizeButton = {buttonX, 270, buttonWidth, buttonHeight};
+    Rectangle cellPlus = {cellSizeButton.x + buttonWidth - 40, cellSizeButton.y,
+                          40, buttonHeight};
+    Rectangle cellMinus = {cellSizeButton.x, cellSizeButton.y, 40,
+                           buttonHeight};
+    Rectangle resetSizeButton = {buttonX, 320, buttonWidth, buttonHeight};
 
     while (!WindowShouldClose()) {
         if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
@@ -59,16 +64,31 @@ int main(void) {
             } else if (CheckCollisionPointRec(mousePosition, randomButton)) {
                 simulation.CreateRandomState();
             } else if (CheckCollisionPointRec(mousePosition, plusButtonArea)) {
-                FPS += 2;
+                FPS += 4;
                 SetTargetFPS(FPS);
             } else if (CheckCollisionPointRec(mousePosition, minusButtonArea)) {
                 if (FPS > 5) {
-                    FPS -= 2;
+                    FPS -= 4;
                     SetTargetFPS(FPS);
                 }
             } else if (CheckCollisionPointRec(mousePosition, resetButton)) {
                 FPS = 12;
                 SetTargetFPS(FPS);
+            } else if (CheckCollisionPointRec(mousePosition, cellPlus)) {
+                CELL_SIZE += 5;
+                if (CELL_SIZE > 0) {
+                    simulation =
+                        Simulation(WINDOW_WIDTH, WINDOW_HEIGHT, CELL_SIZE);
+                }
+            } else if (CheckCollisionPointRec(mousePosition, cellMinus)) {
+                if (CELL_SIZE > 5) {
+                    CELL_SIZE -= 5;
+                    simulation =
+                        Simulation(WINDOW_WIDTH, WINDOW_HEIGHT, CELL_SIZE);
+                }
+            } else if (CheckCollisionPointRec(mousePosition, resetSizeButton)) {
+                CELL_SIZE = 25;
+                simulation = Simulation(WINDOW_WIDTH, WINDOW_HEIGHT, CELL_SIZE);
             }
         }
 
@@ -101,19 +121,34 @@ int main(void) {
         DrawRectangleRec(fpsButton, DARKGRAY);
         DrawText("-", minusButtonArea.x + 15, minusButtonArea.y + 10, 25,
                  RAYWHITE);
-        DrawText("+", plusButtonArea.x + 15, plusButtonArea.y + 10, 25,
-                 RAYWHITE);
-
         char fpsText[20];
         sprintf(fpsText, "%d FPS", FPS);
         DrawText(fpsText,
                  fpsButton.x + (buttonWidth / 2 - MeasureText(fpsText, 20) / 2),
                  fpsButton.y + 10, 20, RAYWHITE);
+        DrawText("+", plusButtonArea.x + 15, plusButtonArea.y + 10, 25,
+                 RAYWHITE);
 
         DrawRectangleRec(resetButton, DARKGRAY);
         textWidth = MeasureText("Reset FPS", 20);
         DrawText("Reset FPS", resetButton.x + (buttonWidth - textWidth) / 2,
                  resetButton.y + 10, 20, RAYWHITE);
+
+        DrawRectangleRec(cellSizeButton, DARKGRAY);
+        DrawText("-", cellMinus.x + 15, cellMinus.y + 10, 25, RAYWHITE);
+        char cellSizeText[20];
+        sprintf(cellSizeText, "%d", CELL_SIZE);
+        DrawText(cellSizeText,
+                 cellSizeButton.x +
+                     (buttonWidth / 2 - MeasureText(cellSizeText, 20) / 2),
+                 cellSizeButton.y + 10, 20, RAYWHITE);
+        DrawText("+", cellPlus.x + 15, cellPlus.y + 10, 25, RAYWHITE);
+
+        DrawRectangleRec(resetSizeButton, DARKGRAY);
+        textWidth = MeasureText("Reset Size", 20);
+        DrawText("Reset Size",
+                 resetSizeButton.x + (buttonWidth - textWidth) / 2,
+                 resetSizeButton.y + 10, 20, RAYWHITE);
 
         EndDrawing();
     }
