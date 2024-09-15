@@ -2,10 +2,8 @@
 
 Made using C++ and raylib
 
-#### to compile and run (in windows):
-```
-mingw32-make && ./Game.exe
-```
 <br>
+<p align="center">
+<img src="https://github.com/user-attachments/assets/36f7c085-b30c-4250-904f-809d13c8da07" width="600">
+</p>
 
-![image](https://github.com/user-attachments/assets/088b7395-b318-4d30-8cb1-a0c1a5fe5252)
