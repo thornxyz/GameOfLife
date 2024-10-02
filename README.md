@@ -5,6 +5,6 @@ Made with C++ and Raylib.
 
 <br>
 <p align="center">
-<img src="https://github.com/user-attachments/assets/977d890d-87e7-4ef1-8897-85df609cf459" width="600">
+<img src="https://github.com/user-attachments/assets/3ddc25b5-218a-4d17-bcf0-85511e415cc6" width="600">
 </p>
 
