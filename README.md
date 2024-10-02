@@ -1,6 +1,7 @@
 ## Conway's Game of Life
 
-Made using C++ and raylib
+Colourful Game of Life.
+Made with C++ and Raylib.
 
 <br>
 <p align="center">

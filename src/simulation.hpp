@@ -1,5 +1,6 @@
 #pragma once
 #include "grid.hpp"
+#include "raylib.h"
 
 class Simulation {
    public:
@@ -9,7 +10,7 @@ class Simulation {
           run(false) {};
 
     void Draw(int xOffset);
-    void SetCellValue(int row, int column, int value);
+    void SetCellValue(int row, int column, Color color);
     int CountLiveNeighbors(int row, int column);
     void Update();
     bool IsRunning() { return run; }

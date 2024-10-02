@@ -1,5 +1,8 @@
 #pragma once
 #include <vector>
+
+#include "globals.hpp"
+#include "raylib.h"
 using std::vector;
 
 class Grid {
@@ -8,21 +11,22 @@ class Grid {
         : rows(height / cellSize),
           columns(width / cellSize),
           cellSize(cellSize),
-          cells(rows, vector<int>(columns, 0)) {};
+          cells(rows, vector<Color>(columns, deadColor)) {};
 
     void Draw(int xOffset);
-    void SetValue(int row, int column, int value);
-    int GetValue(int row, int column);
+    void SetValue(int row, int column, Color value);
+    Color GetValue(int row, int column);
     bool IsWithinBounds(int row, int column);
     int GetRows() { return rows; }
     int GetColumns() { return columns; }
     void FillRandom();
     void Clear();
     void ToggleCell(int row, int column);
+    Color GetAverageColorOfNeighbors(int row, int column);
 
    private:
     int rows;
     int columns;
     int cellSize;
-    vector<vector<int>> cells;
+    vector<vector<Color>> cells;
 };

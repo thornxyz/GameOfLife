@@ -7,7 +7,7 @@ int main(void) {
     Color GREY = {29, 29, 29, 255};
     const int MENU_WIDTH = 200;
     const int WINDOW_WIDTH = 1000;
-    const int WINDOW_HEIGHT = 950;
+    const int WINDOW_HEIGHT = 850;
     int CELL_SIZE = 25;
     int FPS = 12;
 
@@ -17,6 +17,12 @@ int main(void) {
     Simulation simulation(WINDOW_WIDTH, WINDOW_HEIGHT, CELL_SIZE);
 
     bool isPaused = true;
+
+    Color colorOption1 = {255, 0, 0, 255};
+    Color colorOption2 = {0, 255, 0, 255};
+    Color colorOption3 = {0, 0, 255, 255};
+
+    Color selectedColor = colorOption1;
 
     float buttonWidth = 180;
     float buttonHeight = 40;
@@ -37,6 +43,10 @@ int main(void) {
                            buttonHeight};
     Rectangle resetSizeButton = {buttonX, 320, buttonWidth, buttonHeight};
 
+    Rectangle color1Button = {buttonX, 370, buttonWidth, buttonHeight};
+    Rectangle color2Button = {buttonX, 420, buttonWidth, buttonHeight};
+    Rectangle color3Button = {buttonX, 470, buttonWidth, buttonHeight};
+
     while (!WindowShouldClose()) {
         if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
             Vector2 mousePosition = GetMousePosition();
@@ -45,7 +55,7 @@ int main(void) {
 
             if (mousePosition.x >= MENU_WIDTH && column >= 0 &&
                 column < WINDOW_WIDTH / CELL_SIZE) {
-                simulation.ToggleCell(row, column);
+                simulation.SetCellValue(row, column, selectedColor);
             }
         }
 
@@ -89,6 +99,12 @@ int main(void) {
             } else if (CheckCollisionPointRec(mousePosition, resetSizeButton)) {
                 CELL_SIZE = 25;
                 simulation = Simulation(WINDOW_WIDTH, WINDOW_HEIGHT, CELL_SIZE);
+            } else if (CheckCollisionPointRec(mousePosition, color1Button)) {
+                selectedColor = colorOption1;
+            } else if (CheckCollisionPointRec(mousePosition, color2Button)) {
+                selectedColor = colorOption2;
+            } else if (CheckCollisionPointRec(mousePosition, color3Button)) {
+                selectedColor = colorOption3;
             }
         }
 
@@ -143,12 +159,26 @@ int main(void) {
                      (buttonWidth / 2 - MeasureText(cellSizeText, 20) / 2),
                  cellSizeButton.y + 10, 20, RAYWHITE);
         DrawText("+", cellPlus.x + 15, cellPlus.y + 10, 25, RAYWHITE);
-
         DrawRectangleRec(resetSizeButton, DARKGRAY);
         textWidth = MeasureText("Reset Size", 20);
         DrawText("Reset Size",
                  resetSizeButton.x + (buttonWidth - textWidth) / 2,
                  resetSizeButton.y + 10, 20, RAYWHITE);
+
+        DrawRectangleRec(color1Button, colorOption1);
+        textWidth = MeasureText("Color 1", 20);
+        DrawText("Color 1", color1Button.x + (buttonWidth - textWidth) / 2,
+                 color1Button.y + 10, 20, RAYWHITE);
+
+        DrawRectangleRec(color2Button, colorOption2);
+        textWidth = MeasureText("Color 2", 20);
+        DrawText("Color 2", color2Button.x + (buttonWidth - textWidth) / 2,
+                 color2Button.y + 10, 20, RAYWHITE);
+
+        DrawRectangleRec(color3Button, colorOption3);
+        textWidth = MeasureText("Color 3", 20);
+        DrawText("Color 3", color3Button.x + (buttonWidth - textWidth) / 2,
+                 color3Button.y + 10, 20, RAYWHITE);
 
         EndDrawing();
     }

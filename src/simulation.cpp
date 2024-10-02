@@ -3,13 +3,15 @@
 #include <utility>
 #include <vector>
 
+#include "globals.hpp"
+
 using std::pair;
 using std::vector;
 
 void Simulation::Draw(int xOffset) { grid.Draw(xOffset); }
 
-void Simulation::SetCellValue(int row, int column, int value) {
-    grid.SetValue(row, column, value);
+void Simulation::SetCellValue(int row, int column, Color color) {
+    grid.SetValue(row, column, color);
 }
 
 int Simulation::CountLiveNeighbors(int row, int column) {
@@ -22,7 +24,12 @@ int Simulation::CountLiveNeighbors(int row, int column) {
             (row + offset.first + grid.GetRows()) % grid.GetRows();
         int neighborColumn =
             (column + offset.second + grid.GetColumns()) % grid.GetColumns();
-        liveNeighbors += grid.GetValue(neighborRow, neighborColumn);
+        Color neighborColor = grid.GetValue(neighborRow, neighborColumn);
+
+        if (neighborColor.r != deadColor.r || neighborColor.g != deadColor.g ||
+            neighborColor.b != deadColor.b || neighborColor.a != deadColor.a) {
+            liveNeighbors++;
+        }
     }
     return liveNeighbors;
 }
@@ -32,19 +39,22 @@ void Simulation::Update() {
         for (int row = 0; row < grid.GetRows(); row++) {
             for (int column = 0; column < grid.GetColumns(); column++) {
                 int liveNeighbors = CountLiveNeighbors(row, column);
-                int cellValue = grid.GetValue(row, column);
+                Color cellValue = grid.GetValue(row, column);
 
-                if (cellValue == 1) {
+                if (cellValue.r != deadColor.r || cellValue.g != deadColor.g ||
+                    cellValue.b != deadColor.b || cellValue.a != deadColor.a) {
                     if (liveNeighbors > 3 || liveNeighbors < 2) {
-                        tempGrid.SetValue(row, column, 0);
+                        tempGrid.SetValue(row, column, deadColor);
                     } else {
-                        tempGrid.SetValue(row, column, 1);
+                        tempGrid.SetValue(row, column, cellValue);
                     }
                 } else {
                     if (liveNeighbors == 3) {
-                        tempGrid.SetValue(row, column, 1);
+                        Color avgColor =
+                            grid.GetAverageColorOfNeighbors(row, column);
+                        tempGrid.SetValue(row, column, avgColor);
                     } else {
-                        tempGrid.SetValue(row, column, 0);
+                        tempGrid.SetValue(row, column, deadColor);
                     }
                 }
             }
