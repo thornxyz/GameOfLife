@@ -7,8 +7,8 @@ void Grid::Draw(int xOffset) {
     for (int row = 0; row < rows; row++) {
         for (int column = 0; column < columns; column++) {
             Color color = cells[row][column];
-            DrawRectangle(xOffset + column * cellSize, row * cellSize,
-                          cellSize - 0.125, cellSize - 0.125, color);
+            DrawRectangle(xOffset + column * cellSize, row * cellSize, cellSize,
+                          cellSize, color);
         }
     }
 }
@@ -33,7 +33,7 @@ bool Grid::IsWithinBounds(int row, int column) {
 void Grid::FillRandom() {
     for (int row = 0; row < rows; row++) {
         for (int column = 0; column < columns; column++) {
-            int randomValue = GetRandomValue(0, 8);
+            int randomValue = GetRandomValue(0, 20);
             switch (randomValue) {
                 case 1:
                     cells[row][column] = color1;
