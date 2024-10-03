@@ -7,7 +7,7 @@ int main(void) {
     Color GREY = {29, 29, 29, 255};
     const int MENU_WIDTH = 200;
     const int WINDOW_WIDTH = 1000;
-    const int WINDOW_HEIGHT = 850;
+    const int WINDOW_HEIGHT = 950;
     int CELL_SIZE = 25;
     int FPS = 12;
 
@@ -18,11 +18,7 @@ int main(void) {
 
     bool isPaused = true;
 
-    Color colorOption1 = {255, 0, 0, 255};
-    Color colorOption2 = {0, 255, 0, 255};
-    Color colorOption3 = {0, 0, 255, 255};
-
-    Color selectedColor = colorOption1;
+    Color selectedColor = color1;
 
     float buttonWidth = 180;
     float buttonHeight = 40;
@@ -100,11 +96,11 @@ int main(void) {
                 CELL_SIZE = 25;
                 simulation = Simulation(WINDOW_WIDTH, WINDOW_HEIGHT, CELL_SIZE);
             } else if (CheckCollisionPointRec(mousePosition, color1Button)) {
-                selectedColor = colorOption1;
+                selectedColor = color1;
             } else if (CheckCollisionPointRec(mousePosition, color2Button)) {
-                selectedColor = colorOption2;
+                selectedColor = color2;
             } else if (CheckCollisionPointRec(mousePosition, color3Button)) {
-                selectedColor = colorOption3;
+                selectedColor = color3;
             }
         }
 
@@ -165,17 +161,17 @@ int main(void) {
                  resetSizeButton.x + (buttonWidth - textWidth) / 2,
                  resetSizeButton.y + 10, 20, RAYWHITE);
 
-        DrawRectangleRec(color1Button, colorOption1);
+        DrawRectangleRec(color1Button, color1);
         textWidth = MeasureText("Color 1", 20);
         DrawText("Color 1", color1Button.x + (buttonWidth - textWidth) / 2,
                  color1Button.y + 10, 20, RAYWHITE);
 
-        DrawRectangleRec(color2Button, colorOption2);
+        DrawRectangleRec(color2Button, color2);
         textWidth = MeasureText("Color 2", 20);
         DrawText("Color 2", color2Button.x + (buttonWidth - textWidth) / 2,
                  color2Button.y + 10, 20, RAYWHITE);
 
-        DrawRectangleRec(color3Button, colorOption3);
+        DrawRectangleRec(color3Button, color3);
         textWidth = MeasureText("Color 3", 20);
         DrawText("Color 3", color3Button.x + (buttonWidth - textWidth) / 2,
                  color3Button.y + 10, 20, RAYWHITE);

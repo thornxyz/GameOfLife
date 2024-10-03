@@ -36,13 +36,13 @@ void Grid::FillRandom() {
             int randomValue = GetRandomValue(0, 8);
             switch (randomValue) {
                 case 1:
-                    cells[row][column] = Color{255, 0, 0, 255};
+                    cells[row][column] = color1;
                     break;
                 case 2:
-                    cells[row][column] = Color{0, 255, 0, 255};
+                    cells[row][column] = color2;
                     break;
                 case 3:
-                    cells[row][column] = Color{0, 0, 255, 255};
+                    cells[row][column] = color3;
                     break;
                 default:
                     cells[row][column] = deadColor;
@@ -70,13 +70,13 @@ void Grid::ToggleCell(int row, int column) {
             int randomValue = GetRandomValue(1, 3);
             switch (randomValue) {
                 case 1:
-                    cells[row][column] = Color{255, 0, 0, 255};
+                    cells[row][column] = color1;
                     break;
                 case 2:
-                    cells[row][column] = Color{0, 255, 0, 255};
+                    cells[row][column] = color2;
                     break;
                 case 3:
-                    cells[row][column] = Color{0, 0, 255, 255};
+                    cells[row][column] = color3;
                     break;
             }
         }
