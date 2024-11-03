@@ -35,131 +35,127 @@ int Simulation::CountLiveNeighbors(int row, int column) {
 }
 
 // normal gol
-// void Simulation::Update() {
-//     if (IsRunning()) {
-//         for (int row = 0; row < grid.GetRows(); row++) {
-//             for (int column = 0; column < grid.GetColumns(); column++) {
-//                 int liveNeighbors = CountLiveNeighbors(row, column);
-//                 Color cellValue = grid.GetValue(row, column);
+void Simulation::UpdateConway() {
+    if (IsRunning()) {
+        for (int row = 0; row < grid.GetRows(); row++) {
+            for (int column = 0; column < grid.GetColumns(); column++) {
+                int liveNeighbors = CountLiveNeighbors(row, column);
+                Color cellValue = grid.GetValue(row, column);
 
-//                 if (cellValue.r != deadColor.r || cellValue.g != deadColor.g
-//                 ||
-//                     cellValue.b != deadColor.b || cellValue.a != deadColor.a)
-//                     { if (liveNeighbors > 3 || liveNeighbors < 2) {
-//                         tempGrid.SetValue(row, column, deadColor);
-//                     } else {
-//                         tempGrid.SetValue(row, column, cellValue);
-//                     }
-//                 } else {
-//                     if (liveNeighbors == 3) {
-//                         Color avgColor =
-//                             grid.GetAverageColorOfNeighbors(row, column);
-//                         tempGrid.SetValue(row, column, avgColor);
-//                     } else {
-//                         tempGrid.SetValue(row, column, deadColor);
-//                     }
-//                 }
-//             }
-//         }
-//         grid = tempGrid;
-//     }
-// }
+                if (cellValue.r != deadColor.r || cellValue.g != deadColor.g ||
+                    cellValue.b != deadColor.b || cellValue.a != deadColor.a) {
+                    if (liveNeighbors > 3 || liveNeighbors < 2) {
+                        tempGrid.SetValue(row, column, deadColor);
+                    } else {
+                        tempGrid.SetValue(row, column, cellValue);
+                    }
+                } else {
+                    if (liveNeighbors == 3) {
+                        Color avgColor =
+                            grid.GetAverageColorOfNeighbors(row, column);
+                        tempGrid.SetValue(row, column, avgColor);
+                    } else {
+                        tempGrid.SetValue(row, column, deadColor);
+                    }
+                }
+            }
+        }
+        grid = tempGrid;
+    }
+}
 
 // walled cities
-// void Simulation::Update() {
-//     if (IsRunning()) {
-//         for (int row = 0; row < grid.GetRows(); row++) {
-//             for (int column = 0; column < grid.GetColumns(); column++) {
-//                 int liveNeighbors = CountLiveNeighbors(row, column);
-//                 Color cellValue = grid.GetValue(row, column);
+void Simulation::UpdateWalledCities() {
+    if (IsRunning()) {
+        for (int row = 0; row < grid.GetRows(); row++) {
+            for (int column = 0; column < grid.GetColumns(); column++) {
+                int liveNeighbors = CountLiveNeighbors(row, column);
+                Color cellValue = grid.GetValue(row, column);
 
-//                 if (cellValue.r != deadColor.r || cellValue.g != deadColor.g
-//                 ||
-//                     cellValue.b != deadColor.b || cellValue.a != deadColor.a)
-//                     { if (liveNeighbors == 2 || liveNeighbors == 3 ||
-//                         liveNeighbors == 4 || liveNeighbors == 5) {
-//                         tempGrid.SetValue(row, column, cellValue);
-//                     } else {
-//                         tempGrid.SetValue(row, column, deadColor);
-//                     }
-//                 } else {
-//                     if (liveNeighbors == 4 || liveNeighbors == 5 ||
-//                         liveNeighbors == 6 || liveNeighbors == 7 ||
-//                         liveNeighbors == 8) {
-//                         Color avgColor =
-//                             grid.GetAverageColorOfNeighbors(row, column);
-//                         tempGrid.SetValue(row, column, avgColor);
-//                     } else {
-//                         tempGrid.SetValue(row, column, deadColor);
-//                     }
-//                 }
-//             }
-//         }
-//         grid = tempGrid;
-//     }
-// }
+                if (cellValue.r != deadColor.r || cellValue.g != deadColor.g ||
+                    cellValue.b != deadColor.b || cellValue.a != deadColor.a) {
+                    if (liveNeighbors == 2 || liveNeighbors == 3 ||
+                        liveNeighbors == 4 || liveNeighbors == 5) {
+                        tempGrid.SetValue(row, column, cellValue);
+                    } else {
+                        tempGrid.SetValue(row, column, deadColor);
+                    }
+                } else {
+                    if (liveNeighbors == 4 || liveNeighbors == 5 ||
+                        liveNeighbors == 6 || liveNeighbors == 7 ||
+                        liveNeighbors == 8) {
+                        Color avgColor =
+                            grid.GetAverageColorOfNeighbors(row, column);
+                        tempGrid.SetValue(row, column, avgColor);
+                    } else {
+                        tempGrid.SetValue(row, column, deadColor);
+                    }
+                }
+            }
+        }
+        grid = tempGrid;
+    }
+}
 
 // Gnarl
-// void Simulation::Update() {
-//     if (IsRunning()) {
-//         for (int row = 0; row < grid.GetRows(); row++) {
-//             for (int column = 0; column < grid.GetColumns(); column++) {
-//                 int liveNeighbors = CountLiveNeighbors(row, column);
-//                 Color cellValue = grid.GetValue(row, column);
+void Simulation::UpdateGnarl() {
+    if (IsRunning()) {
+        for (int row = 0; row < grid.GetRows(); row++) {
+            for (int column = 0; column < grid.GetColumns(); column++) {
+                int liveNeighbors = CountLiveNeighbors(row, column);
+                Color cellValue = grid.GetValue(row, column);
 
-//                 if (cellValue.r != deadColor.r || cellValue.g != deadColor.g
-//                 ||
-//                     cellValue.b != deadColor.b || cellValue.a != deadColor.a)
-//                     { if (liveNeighbors == 1) {
-//                         tempGrid.SetValue(row, column, cellValue);
-//                     } else {
-//                         tempGrid.SetValue(row, column, deadColor);
-//                     }
-//                 } else {
-//                     if (liveNeighbors == 1) {
-//                         Color avgColor =
-//                             grid.GetAverageColorOfNeighbors(row, column);
-//                         tempGrid.SetValue(row, column, avgColor);
-//                     } else {
-//                         tempGrid.SetValue(row, column, deadColor);
-//                     }
-//                 }
-//             }
-//         }
-//         grid = tempGrid;
-//     }
-// }
+                if (cellValue.r != deadColor.r || cellValue.g != deadColor.g ||
+                    cellValue.b != deadColor.b || cellValue.a != deadColor.a) {
+                    if (liveNeighbors == 1) {
+                        tempGrid.SetValue(row, column, cellValue);
+                    } else {
+                        tempGrid.SetValue(row, column, deadColor);
+                    }
+                } else {
+                    if (liveNeighbors == 1) {
+                        Color avgColor =
+                            grid.GetAverageColorOfNeighbors(row, column);
+                        tempGrid.SetValue(row, column, avgColor);
+                    } else {
+                        tempGrid.SetValue(row, column, deadColor);
+                    }
+                }
+            }
+        }
+        grid = tempGrid;
+    }
+}
 
 // 34 life
-// void Simulation::Update() {
-//     if (IsRunning()) {
-//         for (int row = 0; row < grid.GetRows(); row++) {
-//             for (int column = 0; column < grid.GetColumns(); column++) {
-//                 int liveNeighbors = CountLiveNeighbors(row, column);
-//                 Color cellValue = grid.GetValue(row, column);
+void Simulation::UpdateLife34() {
+    if (IsRunning()) {
+        for (int row = 0; row < grid.GetRows(); row++) {
+            for (int column = 0; column < grid.GetColumns(); column++) {
+                int liveNeighbors = CountLiveNeighbors(row, column);
+                Color cellValue = grid.GetValue(row, column);
 
-//                 if (cellValue.r != deadColor.r || cellValue.g != deadColor.g
-//                 ||
-//                     cellValue.b != deadColor.b || cellValue.a != deadColor.a)
-//                     { if (liveNeighbors == 3 || liveNeighbors == 4) {
-//                         tempGrid.SetValue(row, column, cellValue);
-//                     } else {
-//                         tempGrid.SetValue(row, column, deadColor);
-//                     }
-//                 } else {
-//                     if (liveNeighbors == 3 || liveNeighbors == 4) {
-//                         Color avgColor =
-//                             grid.GetAverageColorOfNeighbors(row, column);
-//                         tempGrid.SetValue(row, column, avgColor);
-//                     } else {
-//                         tempGrid.SetValue(row, column, deadColor);
-//                     }
-//                 }
-//             }
-//         }
-//         grid = tempGrid;
-//     }
-// }
+                if (cellValue.r != deadColor.r || cellValue.g != deadColor.g ||
+                    cellValue.b != deadColor.b || cellValue.a != deadColor.a) {
+                    if (liveNeighbors == 3 || liveNeighbors == 4) {
+                        tempGrid.SetValue(row, column, cellValue);
+                    } else {
+                        tempGrid.SetValue(row, column, deadColor);
+                    }
+                } else {
+                    if (liveNeighbors == 3 || liveNeighbors == 4) {
+                        Color avgColor =
+                            grid.GetAverageColorOfNeighbors(row, column);
+                        tempGrid.SetValue(row, column, avgColor);
+                    } else {
+                        tempGrid.SetValue(row, column, deadColor);
+                    }
+                }
+            }
+        }
+        grid = tempGrid;
+    }
+}
 
 void Simulation::ClearGrid() {
     if (!IsRunning()) {

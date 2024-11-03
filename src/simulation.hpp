@@ -12,7 +12,10 @@ class Simulation {
     void Draw(int xOffset);
     void SetCellValue(int row, int column, Color color);
     int CountLiveNeighbors(int row, int column);
-    void Update();
+    void UpdateConway();
+    void UpdateWalledCities();
+    void UpdateGnarl();
+    void UpdateLife34();
     bool IsRunning() { return run; }
     void Start() { run = true; }
     void Stop() { run = false; }

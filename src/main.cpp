@@ -3,6 +3,9 @@
 #include "raylib.h"
 #include "simulation.hpp"
 
+enum RuleType { CONWAY, WALLED_CITIES, GNARL, LIFE34 };
+RuleType currentRule = CONWAY;
+
 int main(void) {
     Color GREY = {29, 29, 29, 255};
     const int MENU_WIDTH = 200;
@@ -11,7 +14,7 @@ int main(void) {
     int CELL_SIZE = 25;
     int FPS = 12;
 
-    InitWindow(WINDOW_WIDTH + MENU_WIDTH, WINDOW_HEIGHT, "Conway's");
+    InitWindow(WINDOW_WIDTH + MENU_WIDTH, WINDOW_HEIGHT, "GoL");
     SetTargetFPS(FPS);
 
     Simulation simulation(WINDOW_WIDTH, WINDOW_HEIGHT, CELL_SIZE);
@@ -42,6 +45,11 @@ int main(void) {
     Rectangle color1Button = {buttonX, 370, buttonWidth, buttonHeight};
     Rectangle color2Button = {buttonX, 420, buttonWidth, buttonHeight};
     Rectangle color3Button = {buttonX, 470, buttonWidth, buttonHeight};
+
+    Rectangle conwayButton = {buttonX, 540, buttonWidth, buttonHeight};
+    Rectangle walledCitiesButton = {buttonX, 590, buttonWidth, buttonHeight};
+    Rectangle gnarlButton = {buttonX, 640, buttonWidth, buttonHeight};
+    Rectangle life34Button = {buttonX, 690, buttonWidth, buttonHeight};
 
     while (!WindowShouldClose()) {
         if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
@@ -101,11 +109,33 @@ int main(void) {
                 selectedColor = color2;
             } else if (CheckCollisionPointRec(mousePosition, color3Button)) {
                 selectedColor = color3;
+            } else if (CheckCollisionPointRec(mousePosition, conwayButton)) {
+                currentRule = CONWAY;
+            } else if (CheckCollisionPointRec(mousePosition,
+                                              walledCitiesButton)) {
+                currentRule = WALLED_CITIES;
+            } else if (CheckCollisionPointRec(mousePosition, gnarlButton)) {
+                currentRule = GNARL;
+            } else if (CheckCollisionPointRec(mousePosition, life34Button)) {
+                currentRule = LIFE34;
             }
         }
 
         if (!isPaused) {
-            simulation.Update();
+            switch (currentRule) {
+                case CONWAY:
+                    simulation.UpdateConway();
+                    break;
+                case WALLED_CITIES:
+                    simulation.UpdateWalledCities();
+                    break;
+                case GNARL:
+                    simulation.UpdateGnarl();
+                    break;
+                case LIFE34:
+                    simulation.UpdateLife34();
+                    break;
+            }
         }
 
         BeginDrawing();
@@ -114,20 +144,21 @@ int main(void) {
         simulation.Draw(MENU_WIDTH);
 
         DrawRectangleRec(resumePauseButton, isPaused ? DARKGRAY : GREEN);
-        int textWidth =
-            (isPaused ? MeasureText("Resume", 20) : MeasureText("Pause", 20));
         DrawText(isPaused ? "Resume" : "Pause",
-                 resumePauseButton.x + (buttonWidth - textWidth) / 2,
+                 resumePauseButton.x +
+                     (buttonWidth - (isPaused ? MeasureText("Resume", 20)
+                                              : MeasureText("Pause", 20))) /
+                         2,
                  resumePauseButton.y + 10, 20, RAYWHITE);
 
         DrawRectangleRec(clearButton, DARKGRAY);
-        textWidth = MeasureText("Clear", 20);
-        DrawText("Clear", clearButton.x + (buttonWidth - textWidth) / 2,
+        DrawText("Clear",
+                 clearButton.x + (buttonWidth - MeasureText("Clear", 20)) / 2,
                  clearButton.y + 10, 20, RAYWHITE);
 
         DrawRectangleRec(randomButton, DARKGRAY);
-        textWidth = MeasureText("Random", 20);
-        DrawText("Random", randomButton.x + (buttonWidth - textWidth) / 2,
+        DrawText("Random",
+                 randomButton.x + (buttonWidth - MeasureText("Random", 20)) / 2,
                  randomButton.y + 10, 20, RAYWHITE);
 
         DrawRectangleRec(fpsButton, DARKGRAY);
@@ -142,9 +173,10 @@ int main(void) {
                  RAYWHITE);
 
         DrawRectangleRec(resetButton, DARKGRAY);
-        textWidth = MeasureText("Reset FPS", 20);
-        DrawText("Reset FPS", resetButton.x + (buttonWidth - textWidth) / 2,
-                 resetButton.y + 10, 20, RAYWHITE);
+        DrawText(
+            "Reset FPS",
+            resetButton.x + (buttonWidth - MeasureText("Reset FPS", 20)) / 2,
+            resetButton.y + 10, 20, RAYWHITE);
 
         DrawRectangleRec(cellSizeButton, DARKGRAY);
         DrawText("-", cellMinus.x + 15, cellMinus.y + 10, 25, RAYWHITE);
@@ -156,25 +188,54 @@ int main(void) {
                  cellSizeButton.y + 10, 20, RAYWHITE);
         DrawText("+", cellPlus.x + 15, cellPlus.y + 10, 25, RAYWHITE);
         DrawRectangleRec(resetSizeButton, DARKGRAY);
-        textWidth = MeasureText("Reset Size", 20);
         DrawText("Reset Size",
-                 resetSizeButton.x + (buttonWidth - textWidth) / 2,
+                 resetSizeButton.x +
+                     (buttonWidth - MeasureText("Reset Size", 20)) / 2,
                  resetSizeButton.y + 10, 20, RAYWHITE);
 
         DrawRectangleRec(color1Button, color1);
-        textWidth = MeasureText("Color 1", 20);
-        DrawText("Color 1", color1Button.x + (buttonWidth - textWidth) / 2,
-                 color1Button.y + 10, 20, RAYWHITE);
+        DrawText(
+            "Color 1",
+            color1Button.x + (buttonWidth - MeasureText("Color 1", 20)) / 2,
+            color1Button.y + 10, 20, RAYWHITE);
 
         DrawRectangleRec(color2Button, color2);
-        textWidth = MeasureText("Color 2", 20);
-        DrawText("Color 2", color2Button.x + (buttonWidth - textWidth) / 2,
-                 color2Button.y + 10, 20, RAYWHITE);
+        DrawText(
+            "Color 2",
+            color2Button.x + (buttonWidth - MeasureText("Color 2", 20)) / 2,
+            color2Button.y + 10, 20, RAYWHITE);
 
         DrawRectangleRec(color3Button, color3);
-        textWidth = MeasureText("Color 3", 20);
-        DrawText("Color 3", color3Button.x + (buttonWidth - textWidth) / 2,
-                 color3Button.y + 10, 20, RAYWHITE);
+        DrawText(
+            "Color 3",
+            color3Button.x + (buttonWidth - MeasureText("Color 3", 20)) / 2,
+            color3Button.y + 10, 20, RAYWHITE);
+
+        DrawRectangleRec(conwayButton,
+                         (currentRule == CONWAY) ? GREEN : DARKGRAY);
+        DrawText("Conway",
+                 conwayButton.x + (buttonWidth - MeasureText("Conway", 20)) / 2,
+                 conwayButton.y + 10, 20, RAYWHITE);
+
+        DrawRectangleRec(walledCitiesButton,
+                         (currentRule == WALLED_CITIES) ? GREEN : DARKGRAY);
+        DrawText("Walled Cities",
+                 walledCitiesButton.x +
+                     (buttonWidth - MeasureText("Walled Cities", 20)) / 2,
+                 walledCitiesButton.y + 10, 20, RAYWHITE);
+
+        DrawRectangleRec(gnarlButton,
+                         (currentRule == GNARL) ? GREEN : DARKGRAY);
+        DrawText("Gnarl",
+                 gnarlButton.x + (buttonWidth - MeasureText("Gnarl", 20)) / 2,
+                 gnarlButton.y + 10, 20, RAYWHITE);
+
+        DrawRectangleRec(life34Button,
+                         (currentRule == LIFE34) ? GREEN : DARKGRAY);
+        DrawText(
+            "34 Life",
+            life34Button.x + (buttonWidth - MeasureText("34 Life", 20)) / 2,
+            life34Button.y + 10, 20, RAYWHITE);
 
         EndDrawing();
     }
